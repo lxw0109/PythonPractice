@@ -3,6 +3,7 @@ Download resources corresponding to the urls with multi threads.
 
 ##Note:
 1. Note the differences between Thread.start() and Thread.run().<br>
+
 ####output with Thread.start()
 ```bash
 lxw threadDownload$ python threadDownload.py 
