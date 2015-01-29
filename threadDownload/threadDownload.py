@@ -43,12 +43,12 @@ def main():
     start = time.time()
     for index in xrange(length):
         th = MyThread(index, urls[index])
-        #th.start()
-        th.run()
+        th.start()
+        #th.run()
         threads.append(th)
 
-    #for index in xrange(length):
-    #    threads[index].join()    #Main thread blocks, until each thread terminates.
+    for index in xrange(length):
+        threads[index].join()    #Main thread blocks, until each thread terminates.
     end = time.time()
     #print(type(end))   #float
     print("Program is Over. Time cost: " + str(end - start))
