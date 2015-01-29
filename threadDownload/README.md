@@ -2,7 +2,7 @@
 Download resources corresponding to the urls with multi threads.
 
 ##Note:
-1. Note the differnce between Thread.start() and Thread.run().
+1. Note the differences between Thread.start() and Thread.run().<br>
 ####output with Thread.start()
 ```bash
 lxw threadDownload$ python threadDownload.py 
@@ -25,6 +25,6 @@ Thread 4 has finished downloading "http://www.irs.gov/pub/irs-pdf/f1040sb.pdf"!
 Thread 5 has finished downloading "http://www.cnblogs.com/lxw0109/p/start_run.html"!
 Program is Over. Time cost: 8.25431513786
 ```
-2. Cannot invoke join() seprately without invoking start() in advance, or we may get the following error info:
+2. Cannot invoke join() seprately without invoking start() in advance, or we may get the following error info:<br>
 **"RuntimeError: cannot join thread before it is started"**
 
