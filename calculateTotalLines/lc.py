@@ -11,12 +11,17 @@ def main(directory):
     count = 0
     for dirPath, dirNames, fileNames in os.walk(directory):
         for fileName in fileNames:
-            with open(dirPath+os.sep+fileName) as f:
-                while 1:
-                    string = f.readline()
-                    if not string:
-                        break
-                    count += 1
+            try:
+                with open(dirPath+os.sep+fileName) as f:
+                    while 1:
+                        string = f.readline()
+                        if not string:
+                            break
+                        count += 1
+            except Exception, e:
+                print("---------Exception-----:\n\t" + e)
+
+
     if directory == ".":
         print("The number of lines in all files in current direcotry is {0}!".format(count))
     else:
