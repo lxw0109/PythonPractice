@@ -11,8 +11,8 @@ A good method of implementation of the 'Selection Problem' is based on **Quick S
 In my Program, I implemented 2 methods: one is based on **QS**, the other is based on **Selection Sort(abbr. SS)**.<br>
 
 I implemented some variation problems about 'Selection Problem', they are:<br>
-1. Get k largest items in the arr. The result are NOT in order.
-2. Get k largest items in the arr. The result are in order.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Get k largest items in the arr. The result are NOT in order.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Get k largest items in the arr. The result are in order.<br>
 
 One thing needs to be introduced in advance:<br>
 In the following functions, bigKItems() and kthBig() are very similar. Actually I coded bigKItems() based on kthBig(). <br>
