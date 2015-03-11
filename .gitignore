@@ -1,3 +1,7 @@
 result
 hosts
 newHost
+* 
+*/*
+!*.py
+!*.md
