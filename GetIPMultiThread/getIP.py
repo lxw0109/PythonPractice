@@ -10,25 +10,20 @@ import traceback
 def getIP(hostname):
     try:
         localIP = socket.gethostbyname(hostname)
-        sleep(1)
-        return "Hostname: {0}\t IP: {1}\n".format(hostname, localIP)
+        return "{0},{1}\n".format(hostname, localIP)
     except Exception, e:
-        print hostname
-        #print traceback.format_exc()
+        return hostname + "\n"
 
 def main():
     with open("hosts") as f:
-    #with open("newHost") as f:
-        with open("./result", "a") as f1:
+        with open("./result.csv", "w") as f1:
             while 1:
                 hostname = f.readline().strip()
                 if not hostname:
                     break
                 content = getIP(hostname)
-                if content:
-                    f1.write(content)
-                    f1.flush()
-
+                f1.write(content)
+                f1.flush()
 
 if __name__ == '__main__':
     main()
