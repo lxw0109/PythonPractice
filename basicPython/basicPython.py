@@ -67,7 +67,7 @@ print retFunc(10, 20)
 
 
 # OO
-class Person:
+class Person(object):
     def __init__(self, name):
         self.name = name
     def sayHello(self):  # Every function needs at least a parameter which represent the object itself.
@@ -89,7 +89,7 @@ except EOFError:  # Ctrl + D
     print("Why did you do an EOF on me?")
 except KeyboardInterrupt:  # Ctrl + C
     print("You cancelled the operation.")
-else:   #NOTE: Do NOT come here when except showed. 
+else:   #NOTE: Do NOT come here when except showed.
     print("You entered {0}".format(text))
 
 
