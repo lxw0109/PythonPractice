@@ -4,20 +4,25 @@
 # Time: 2014-03-10
 
 import random
+#[Google Code Style] Do not use '*' in 'import' expression
+#'from Thread import MyThread' is better than 'from Thread import *'
 
 # name of a module
 if __name__ == "__main__":
-    print "{0} is being run by itself".format(__name__)
+	#[Google Code Style] give priority to %
+    #print "{0} is being run by itself".format(__name__)
+    print("%s is being run by itself" % __name__)
 else:
-    print "{0} is imported as a module".format(__name__)  # __name__ == BasicPython
+	# __name__ == basicPython    
+    print("%s is imported as a module" % __name__)
+
 
 # while & if
-# target = 24
 target = random.randint(1, 100)
 # "while 1" is faster than "while Ture".
 # while True:
 while 1:
-    # number = int(input("Please input an integer:")) #python 3+
+    #number = int(input("Please input an integer:")) #python 3+
     number = input("Please input an integer:")  # python 2+ #NOTE:The parenthesis is essential.
     if number == target:
         print "You got it"
@@ -46,7 +51,7 @@ for i in range(1, 10, 2):  # "range" is powerful
 def sayHello():
     print "Hello World!"
 sayHello()  # call the function
-print sayHello()  # NOTE the word "NONE" is printed. <A Byte of Python> P41
+print sayHello()  # NOTE the word "NONE" is printed.
 
 def printMax(a, b):
     if a > b:
@@ -57,13 +62,6 @@ def printMax(a, b):
     else:
         print "{0} = {1}".format(a, b)
 printMax(30, 20)
-
-def retFunc(x, y):
-    if x > y:
-        return x
-    else:
-        return y
-print retFunc(10, 20)
 
 
 # OO
@@ -77,17 +75,22 @@ class Person(object):
 
 p = Person("lxw")
 p.sayHello()
+#with object: <class '__main__.Person'>; without object: <type 'instance'>
+print(type(p))
+#with object: <type 'type'>; without object: <type 'classobj'>
+print(type(Person))
 
 
 # Exception
 try:
-    # text = input "Enter something:"
+    # text = input("Enter something:")
     # For Python 2.7.*: your_input_string is NOT OK.  "your_input_string" is OK. "" here is essential.
     # For Python 3.*: both are OK.
     text = raw_input("Enter something:")
-except EOFError:  # Ctrl + D
+except EOFError as eof:  # Ctrl + D
+#except EOFError, eof:  #[Google Code Style]The previous line is better than the following line.
     print("Why did you do an EOF on me?")
-except KeyboardInterrupt:  # Ctrl + C
+except KeyboardInterrupt as ki:  # Ctrl + C
     print("You cancelled the operation.")
 else:   #NOTE: Do NOT come here when except showed.
     print("You entered {0}".format(text))
@@ -97,5 +100,64 @@ else:   #NOTE: Do NOT come here when except showed.
 def reverse(text):
     return text[::-1]
 print reverse("Hello World!")
-textOne = "lxw"
-print reverse(textOne)
+
+#[Google Code Style]
+#1.
+x = 1
+print "x is {0}.".format(x)
+#Simple condition expression can be written in a single line.
+x = 5 if x < 5 else x
+print "x is {0}.".format(x)
+
+
+#2. Default Argument Values
+def foo(a, b = None):
+	print "first"
+	if b is None:
+		b = []
+	print a, b
+
+#If both foo(a, b = None) and foo(a, b = []) exist, the NEAREST(to the caller) will be invoked 
+'''
+def foo(a, b = []):
+	print "second"
+	print a, b
+'''
+
+#the method foo() is better than method foo1().
+def foo1(a, b = []):
+	print a, b
+
+foo(1)
+foo(1, 2)
+#the following line is better than the previous line.
+foo(1, b = 2)
+
+
+#3. Never use == or != to compare singletons like None. Use is or is not.
+x = Person("lxw")
+if not x and x is not None:
+	pass
+#When handling integers use == or !=:
+num = 10
+#Yes:
+if not x:
+	print 'no x'
+if num == 0:
+	pass
+if num % 10 == 0:
+	pass
+#No:
+nums = []
+if len(nums) == 0:
+	print("length is 0")		#Y
+if not nums:
+	print("nums is not true")	#Y
+if nums is None:
+	print("nums is None")		#N
+if [] is not None:
+	print("[] is not None")		#Y
+if num is not None and not num:
+	pass
+if not num % 10:
+	pass
