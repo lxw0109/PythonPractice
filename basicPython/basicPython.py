@@ -13,7 +13,7 @@ if __name__ == "__main__":
     #print "{0} is being run by itself".format(__name__)
     print("%s is being run by itself" % __name__)
 else:
-	# __name__ == basicPython    
+	# __name__ == basicPython
     print("%s is imported as a module" % __name__)
 
 
@@ -101,63 +101,67 @@ def reverse(text):
     return text[::-1]
 print reverse("Hello World!")
 
+
 #[Google Code Style]
 #1.
 x = 1
-print "x is {0}.".format(x)
+print "x: %d." % x
 #Simple condition expression can be written in a single line.
 x = 5 if x < 5 else x
-print "x is {0}.".format(x)
+print "x: %d." % x
 
 
 #2. Default Argument Values
 def foo(a, b = None):
-	print "first"
-	if b is None:
-		b = []
-	print a, b
-
-#If both foo(a, b = None) and foo(a, b = []) exist, the NEAREST(to the caller) will be invoked 
-'''
-def foo(a, b = []):
-	print "second"
-	print a, b
-'''
+    if b is None:
+        b = []
+    print a, b
 
 #the method foo() is better than method foo1().
 def foo1(a, b = []):
-	print a, b
+    print a, b
 
+#If both foo(a, b = None) and foo(a, b = []) exist, the NEAREST(to the caller) will be invoked
+'''
+def foo(a, b = []):
+    print "second"
+    print a, b
+'''
 foo(1)
 foo(1, 2)
 #the following line is better than the previous line.
 foo(1, b = 2)
 
+foo1(1)
+foo1(1, 2)
+foo1(1, b = 2)
+
 
 #3. Never use == or != to compare singletons like None. Use is or is not.
 x = Person("lxw")
-if not x and x is not None:
-	pass
+if x is not None:
+    print "x is not None"
+if x:   #OK: if not x
+    print "x is not None"
+
 #When handling integers use == or !=:
 num = 10
 #Yes:
 if not x:
-	print 'no x'
+    print 'no x'
 if num == 0:
-	pass
+    pass
 if num % 10 == 0:
-	pass
-#No:
+    pass
+
 nums = []
 if len(nums) == 0:
-	print("length is 0")		#Y
+    print("[] length is 0")		#Y
 if not nums:
-	print("nums is not true")	#Y
+    print("not [] is true")	        #Y
 if nums is None:
-	print("nums is None")		#N
-if [] is not None:
-	print("[] is not None")		#Y
-if num is not None and not num:
-	pass
+    print("[] is None")		        #NNNNNNNNN
+if nums is not None:
+    print("[] is not None")		#Y
 if not num % 10:
-	pass
+    print("'not num % 10' is true")     #Y
