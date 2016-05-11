@@ -19,7 +19,7 @@ def main(directory):
                             break
                         count += 1
             except Exception, e:
-                print("---------Exception-----:\n\t" + e)
+                print("---------Exception-----:\n\t" + str(e))
 
 
     if directory == ".":
