@@ -7,6 +7,7 @@
 ###DESCRIPTION
     Calculate total line count of all files in the specific directory.(Current working directory as default).
 
+**TODO**:
     -r, --recursive
         calculate the files in the subdirectory.
 
