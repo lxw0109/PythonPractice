@@ -1,7 +1,5 @@
-result
-hosts
-newHost
-* 
-*/*
+**/result
+**/hosts
+**/newHost
 !*.py
 !*.md
