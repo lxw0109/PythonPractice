@@ -6,7 +6,14 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import unittest
 import time
+import datetime
+import urllib2
+import sys
+import traceback
 
+#UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-10: ordinal not in range(128)
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 #html = browser.find_element_by_xpath("//*").get_attribute("outerHTML")
 #不要用browser.page_source，那样得到的页面源码不标准
@@ -100,7 +107,8 @@ def basicOperations(url):
     time.sleep(1)
     browser.find_element_by_xpath('//*[@id="password"]').send_keys(Keys.BACK_SPACE)
     browser.find_element_by_xpath('//*[@id="password"]').clear()
-    browser.find_element_by_xpath('//*[@id="password"]').send_keys("liuxiaowei")
+    #browser.find_element_by_xpath('//*[@id="password"]').send_keys("liuxiaowei")
+    browser.find_element_by_xpath('//*[@id="password"]').send_keys("6Liuxiaowei")
     time.sleep(1)
 
     email.send_keys(Keys.CONTROL, "a")
@@ -118,15 +126,29 @@ def basicOperations(url):
     ActionChains(browser).click(article).perform() #鼠标左键 ".perform()" is essential.
 
 
+def getSourceCode(url):
+    try:
+        reqHeader = {"User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0"}
+        request = urllib2.Request(url=url, headers=reqHeader)
+        response = urllib2.urlopen(request)
+        sourceCode = response.read()
+        return sourceCode
+    except Exception as e:
+        print traceback.format_exc()
+        return ""
+
+
 if __name__ == '__main__':
     """
     #0. unittest demo:
     #unittest.main(verbosity=2)
     """
 
+    """
     browser = webdriver.Chrome()	#Get local session of chrome
     #print type(browser) #<class 'selenium.webdriver.chrome.webdriver.WebDriver'>
     browser.maximize_window() #浏览器窗口最大化
+    """
 
     """
     #1. search in Yahoo automatically
@@ -139,7 +161,31 @@ if __name__ == '__main__':
     csdnDemo()
     """
 
+    """
     #3. https://my.oschina.net/yangyanxing/blog/280871?p=1
     basicOperations("https://www.baidu.com/")   #NOTE: "https://" is essential.
     """
-    """
+
+    #4. PhantomJS demo
+    print datetime.datetime.now()
+    driver = webdriver.PhantomJS(service_args=["--load-images=no"])
+    #driver = webdriver.Chrome()
+    driver.get("http://hotel.qunar.com/")
+    title = driver.title
+    print "title:", title
+    pageSource = driver.page_source
+    print "driver.page_source:\n", pageSource
+    print "---" * 20
+    pageSource = driver.find_element_by_xpath("//*").get_attribute("outerHTML")
+    print "driver.find_element_by_xpath(\"//*\").get_attribute(\"outerHTML\"):\n", pageSource
+    print "---" * 20
+    pageSource = driver.find_element_by_xpath("*").get_attribute("outerHTML")
+    print "driver.find_element_by_xpath(\"*\").get_attribute(\"outerHTML\"):\n", pageSource
+    print "---" * 20
+
+    sourceCode = getSourceCode("http://hotel.qunar.com/")
+    print "urlopen():\n", sourceCode
+    print "---" * 20
+
+    print datetime.datetime.now()
+
