@@ -1,22 +1,40 @@
 #!/usr/bin/python2.7
+#coding: utf-8
 # File: basicPython.py
 # Author: lxw
 # Time: 2014-03-10
 
 import random
+import os
 #[Google Code Style] Do not use '*' in 'import' expression
 #'from Thread import MyThread' is better than 'from Thread import *'
 
 #logging.logger
 import logging
+
 def loggerDemo():
-    print logging.CRITICAL
-    print logging.ERROR
-    print logging.WARNING
-    print logging.INFO
-    print logging.DEBUG
-    print logging.NOTSET
+    logging.basicConfig(filemode="w", level=logging.DEBUG)  #filemode not working for logger()?
+
+    loggerOut = logging.getLogger("output")
+    #loggerOut.setLevel(logging.DEBUG)
+    #创建一个handler，用于写入日志文件
+    fh = logging.FileHandler(os.path.join(os.getcwd(),"{0}_debug.log".format(__name__ if __name__ != "__main__" else "basicPython")))
+    formatter = logging.Formatter("%(asctime)s - %(message)s")
+    fh.setFormatter(formatter)
+    loggerOut.addHandler(fh)
+    loggerOut.debug("hello in Logger(Output)")
+
+    loggerErr = logging.getLogger("error")
+    #loggerErr.setLevel(logging.ERROR)
+    #创建一个handler，用于写入日志文件
+    fh = logging.FileHandler(os.path.join(os.getcwd(),"{0}_error.log".format(__name__ if __name__ != "__main__" else "basicPython")))
+    formatter = logging.Formatter("%(asctime)s - %(message)s")
+    fh.setFormatter(formatter)
+    loggerErr.addHandler(fh)
+    loggerErr.debug("hello in Logger(Error)")
+
 loggerDemo()
+
 
 # name of a module
 if __name__ == "__main__":

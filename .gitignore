@@ -1,5 +1,7 @@
 **/result
 **/hosts
 **/newHost
+**/*.log
+**/*.pyc
 !*.py
 !*.md
