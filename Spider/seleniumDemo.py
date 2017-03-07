@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+#References: https://pypi.python.org/pypi/selenium
+
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -10,17 +12,17 @@ import datetime
 import urllib2
 import sys
 import traceback
+import os
+import logging
+logging.basicConfig(level=logging.DEBUG, filemode="w")
 
 #UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-10: ordinal not in range(128)
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-#html = browser.find_element_by_xpath("//*").get_attribute("outerHTML")
-#不要用browser.page_source，那样得到的页面源码不标准
-
-
 class YahooTestCase(unittest.TestCase):
     """
+    HAVE NO NEED TO CARE TOO MUCH ABOUT THIS DEMO.
     Selenium WebDriver is often used as a basis for testing web applications.
     Here is a simple example uisng Python’s standard unittest library
     """
@@ -34,11 +36,17 @@ class YahooTestCase(unittest.TestCase):
 
 
 def searchInYahoo(url):
+    """
+    browser.get("http://www.baidu.com")
+    #browser.get("www.baidu.com")    #Cannot navigate to invalid URL. NOTE: http:// is essential.
+    """
     browser.get(url)
+    #print "browser.title:", browser.title
     assert "Yahoo" in browser.title
     #elem = browser.find_element_by_name("p") #[OK]Find the search box
-    elem = browser.find_element_by_xpath("//*[@id='uh-search-box']") #[OK]Find the search box
+    elem = browser.find_element_by_xpath('//*[@id="uh-search-box"]') #[OK]Find the search box
     elem.send_keys("lxw0109" + Keys.RETURN)
+    #print "Keys.RETURN:", Keys.RETURN
     time.sleep(3)
 
 
@@ -47,13 +55,16 @@ def csdnDemo():
     assert "Yahoo" in browser.title
     elem = browser.find_element_by_name("p") # Find the query box
     elem.send_keys("seleniumhq" + Keys.RETURN)
-    time.sleep(0.2) # Let the page load, will be added to the API
+    time.sleep(3) # Let the page load, will be added to the API
+    #browser.implicitly_wait(3) # 智能等待
     try:
         newUrl = browser.find_element_by_xpath("//a[contains(@href,'http://www.seleniumhq.org')]")
-        ActionChains(browser).click(newUrl).perform() #鼠标左键 ".perform()" is essential. 
+        #newUrl = browser.find_element_by_xpath('//*[@id="yucs-login_signIn"]')
+        ActionChains(browser).click(newUrl).perform() #鼠标左键. ".perform()" is essential. 
         #print newUrl #<selenium.webdriver.remote.webelement.WebElement (session="e4d91ee08e7bcc7e89844a0464051f53", element="0.6900426994876563-1")>
     except NoSuchElementException:
         assert 0, "can't find seleniumhq"
+        print traceback.format_exc()
     time.sleep(3)
     browser.close()
 
@@ -137,12 +148,18 @@ def getSourceCode(url):
         print traceback.format_exc()
         return ""
 
+def generateLogger(loggerName):
+    pageSrcLogger = logging.getLogger(loggerName)
+    fh = logging.FileHandler(os.path.join(os.getcwd(), loggerName + ".log"))
+    formatter = logging.Formatter("%(message)s")
+    fh.setFormatter(formatter)
+    pageSrcLogger.addHandler(fh)
+    return pageSrcLogger
+
 
 if __name__ == '__main__':
-    """
     #0. unittest demo:
     #unittest.main(verbosity=2)
-    """
 
     """
     browser = webdriver.Chrome()	#Get local session of chrome
@@ -156,15 +173,11 @@ if __name__ == '__main__':
     browser.quit()
     """
 
-    """
     #2. http://blog.csdn.net/carolzhang8406/article/details/6925588
-    csdnDemo()
-    """
+    #csdnDemo()
 
-    """
     #3. https://my.oschina.net/yangyanxing/blog/280871?p=1
-    basicOperations("https://www.baidu.com/")   #NOTE: "https://" is essential.
-    """
+    #basicOperations("https://www.baidu.com/")   #NOTE: "https://" is essential.
 
     #4. PhantomJS demo
     print datetime.datetime.now()
@@ -173,19 +186,22 @@ if __name__ == '__main__':
     driver.get("http://hotel.qunar.com/")
     title = driver.title
     print "title:", title
-    pageSource = driver.page_source
-    print "driver.page_source:\n", pageSource
-    print "---" * 20
-    pageSource = driver.find_element_by_xpath("//*").get_attribute("outerHTML")
-    print "driver.find_element_by_xpath(\"//*\").get_attribute(\"outerHTML\"):\n", pageSource
-    print "---" * 20
-    pageSource = driver.find_element_by_xpath("*").get_attribute("outerHTML")
-    print "driver.find_element_by_xpath(\"*\").get_attribute(\"outerHTML\"):\n", pageSource
-    print "---" * 20
+    pageSource = driver.page_source     #得到的页面源码不标准 ?但没有发现不标准的地方
+    pageSrcLogger = generateLogger("driver.page_source")
+    pageSrcLogger.debug(pageSource)
 
-    sourceCode = getSourceCode("http://hotel.qunar.com/")
-    print "urlopen():\n", sourceCode
-    print "---" * 20
+    #RECOMMENDED
+    pageSource = driver.find_element_by_xpath("//*").get_attribute("outerHTML")
+    slashSlashStarLLogger = generateLogger("slashSlashStar")
+    slashSlashStarLLogger.debug(pageSource)
+
+    pageSource = driver.find_element_by_xpath("*").get_attribute("outerHTML")
+    starLogger = generateLogger("star")
+    starLogger.debug(pageSource)
+
+    sourceCode = getSourceCode("http://hotel.qunar.com/")   #urlopen: 好多信息提取不出来
+    urlopenLogger = generateLogger("urlopen")
+    urlopenLogger.debug(sourceCode)
 
     print datetime.datetime.now()
 
