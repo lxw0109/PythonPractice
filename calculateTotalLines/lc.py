@@ -3,6 +3,7 @@
 #Author: lxw
 #Time: 2016-05-11
 #Usage: Calculate the total lines of the specific Directory(Current working directory as default).
+#The "cloc" command in Linux is much better than lc
 
 import os
 import sys
@@ -13,7 +14,7 @@ def main(directory):
         for fileName in fileNames:
             try:
                 #-e(--extension)
-                if fileName.endswith(".java"):
+                if fileName.endswith(".py"):
                     with open(dirPath + os.sep + fileName, "rU") as f:
                         while 1:
                             string = f.readline()
