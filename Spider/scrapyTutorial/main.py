@@ -8,4 +8,6 @@ from scrapy import cmdline
 
 # cmdline.execute(["scrapy", "crawl", "neeq", "-L", "WARNING"])
 # cmdline.execute("scrapy crawl quotes -L WARNING".split())
-cmdline.execute("scrapy crawl selectors -L WARNING".split())
+# cmdline.execute("scrapy crawl selectors -L WARNING".split())
+cmdline.execute("scrapy crawl item_pipeline -L WARNING".split())
+

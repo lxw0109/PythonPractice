@@ -5,3 +5,5 @@
 **/*.pyc
 !*.py
 !*.md
+Spider/scrapyTutorial/lxw_blog_articles.jl
+
